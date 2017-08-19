@@ -10,10 +10,10 @@ The first time you create your account, you need to create some initial steps:
     5. Store the account id from https://console.aws.amazon.com/billing/home?#/account `pass insert -m keytwine/aws/root/account_id`
     6. Enable [IAM User and Role Access to Billing Information](https://console.aws.amazon.com/billing/home#/account)
 
- 2. Run the script `./scripts/generate_TerraformInitRestricted_policy.sh` and
-	manually create the policy `TerraformInitRestricted` with the output.
-	It allows  API usage and restricts by IP and time for 1h: `TerraformInitRestricted`.
-	Maybe a little bit paranoid, but it is free to have :).
+ 2. Run the script `./scripts/generate_TerraformInitRestricted_policy.sh $(pass keytwine/aws/root/account_id)` and
+    manually create the policy `TerraformInitRestricted` with the output.
+    It allows  API usage and restricts by IP and time for 1h: `TerraformInitRestricted`.
+    Maybe a little bit paranoid, but it is free to have :).
 
  4. Create `terraform-init` user:
     1. Programatic access only

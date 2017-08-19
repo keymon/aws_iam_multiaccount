@@ -17,8 +17,14 @@ case "$(uname -s)" in
 esac
 MY_IP="$(curl -qs ifconfig.co)"
 
-ACCOUNT_ID="$(pass keytwine/aws/root/account_id)"
-#ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text | tr -d '\r')"
+ACCOUNT_ID="${ACCOUNT_ID:=${-1}}"
+if [ -z "${ACCOUNT_ID}" ]; then
+  cat <<EOF
+Pass the root AWS account id as argument. You can get it in the console or running:
+  aws sts get-caller-identity --query Account --output text | tr -d '\r'
+EOF
+  exit 1
+fi
 
 cat <<EOF
 #
