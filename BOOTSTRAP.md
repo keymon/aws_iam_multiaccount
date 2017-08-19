@@ -32,8 +32,6 @@ EOF
 
 ```
 eval $(keytwine/aws/root/terraform-init.credentials.sh)
-./run_terraform.sh init-backend
-./run_terraform.sh init
 ./run_terraform.sh apply
 ```
 

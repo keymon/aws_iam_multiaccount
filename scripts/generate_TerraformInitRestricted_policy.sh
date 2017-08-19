@@ -71,36 +71,6 @@ cat <<EOF
          "Action" : [
             "iam:*"
          ]
-      },
-      {
-         "Effect" : "Allow",
-         "Action" : [
-            "s3:GetObject",
-            "s3:PutObject",
-            "s3:CreateBucket",
-            "s3:ListBucket"
-         ],
-         "Resource" : [
-            "arn:aws:s3:::terraform-tfstate-*",
-            "arn:aws:s3:::terraform-tfstate-*/*"
-         ]
-      },
-      {
-         "Effect" : "Allow",
-         "Resource" : [
-            "arn:aws:dynamodb:*:${ACCOUNT_ID}:table/terraform_locks"
-         ],
-         "Action" : [
-            "dynamodb:CreateTable",
-            "dynamodb:DescribeTable",
-            "dynamodb:Query",
-            "dynamodb:Scan",
-            "dynamodb:PutItem",
-            "dynamodb:UpdateItem",
-            "dynamodb:DeleteItem",
-            "dynamodb:GetItem",
-            "dynamodb:BatchGetItem"
-         ]
       }
    ]
 }
