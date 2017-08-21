@@ -9,6 +9,11 @@ resource "aws_iam_role_policy_attachment" "billing_AssumeBillingRole" {
   policy_arn = "${aws_iam_policy.AssumeBillingRole.arn}"
 }
 
+resource "aws_iam_role_policy_attachment" "billing_RestrictToWhitelistedIPs" {
+  role       = "${aws_iam_role.billing.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+}
+
 resource "aws_iam_role" "admin" {
   name               = "admin"
   description        = "Administrator: access to all resources and APIs. Occasional use."
@@ -25,6 +30,11 @@ resource "aws_iam_role_policy_attachment" "admin_AdministratorAccess" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "admin_RestrictToWhitelistedIPs" {
+  role       = "${aws_iam_role.admin.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+}
+
 resource "aws_iam_role" "dev" {
   name               = "dev"
   description        = "Normal Developer: access to assume roles in SubAccounts."
@@ -34,4 +44,9 @@ resource "aws_iam_role" "dev" {
 resource "aws_iam_role_policy_attachment" "dev_AssumeSubAccountDevRole" {
   role       = "${aws_iam_role.dev.name}"
   policy_arn = "${aws_iam_policy.AssumeSubAccountDevRole.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "dev_RestrictToWhitelistedIPs" {
+  role       = "${aws_iam_role.dev.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
 }

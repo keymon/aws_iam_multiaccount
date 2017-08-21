@@ -45,14 +45,29 @@ resource "aws_iam_group_policy_attachment" "billing_users_AssumeBillingRole" {
   policy_arn = "${aws_iam_policy.AssumeBillingRole.arn}"
 }
 
+resource "aws_iam_group_policy_attachment" "billing_users_RestrictToWhitelistedIPs" {
+  group      = "${aws_iam_group.billing_users.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+}
+
 resource "aws_iam_group_policy_attachment" "admin_users_AssumeAdminRole" {
   group      = "${aws_iam_group.admin_users.name}"
   policy_arn = "${aws_iam_policy.AssumeAdminRole.arn}"
 }
 
+resource "aws_iam_group_policy_attachment" "admin_users_RestrictToWhitelistedIPs" {
+  group      = "${aws_iam_group.admin_users.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+}
+
 resource "aws_iam_group_policy_attachment" "dev_users_AssumeSubAccountDevRole" {
   group      = "${aws_iam_group.dev_users.name}"
   policy_arn = "${aws_iam_policy.AssumeSubAccountDevRole.arn}"
+}
+
+resource "aws_iam_group_policy_attachment" "dev_users_RestrictToWhitelistedIPs" {
+  group      = "${aws_iam_group.dev_users.name}"
+  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
 }
 
 resource "aws_iam_group_policy_attachment" "interactive_users_SelfManageAccount" {

@@ -24,6 +24,8 @@ module "aws-root-account-init" {
   dev_users = [
     "${module.hector_rivas_aws_dev_keytwine_com.name}"
   ]
+
+  allowed_ips = "${var.allowed_ips}"
 }
 
 output "aws_console_url" {

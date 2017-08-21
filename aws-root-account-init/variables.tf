@@ -34,3 +34,8 @@ variable "dev_users" {
   description = "List of native users to add to dev-users group, allowed to assume role dev"
   type        = "list"
 }
+
+variable "allowed_ips" {
+  description = "List of IPs allowed to operate with these accounts"
+  type        = "list"
+}
