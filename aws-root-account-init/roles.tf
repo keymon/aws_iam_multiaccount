@@ -32,6 +32,6 @@ resource "aws_iam_role" "dev" {
 }
 
 resource "aws_iam_role_policy_attachment" "dev_AssumeSubAccountDevRole" {
-  role       = "${aws_iam_role.billing.name}"
+  role       = "${aws_iam_role.dev.name}"
   policy_arn = "${aws_iam_policy.AssumeSubAccountDevRole.arn}"
 }
