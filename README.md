@@ -5,7 +5,7 @@ Configure base AWS account IAM policies automatically using terraform.
 ## Bootstrap: first manual configuration
 
 Follow the instructions in [`BOOTSTRAP.md`](./BOOTSTRAP.md) to
-initalise your account.
+initalise your account or add new subaccounts.
 
 ## Allow usage only from whitelisted IPs
 

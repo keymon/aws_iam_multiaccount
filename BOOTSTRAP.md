@@ -1,5 +1,7 @@
 # Bootstrap the accounts
 
+## Bootstrapping the root account
+
 The first time you create your account, you need to create some initial steps:
 
  1. Create a root account
@@ -37,12 +39,38 @@ eval $(keytwine/aws/root/terraform-init.credentials.sh)
 ./run_terraform.sh apply
 ```
 
- 6. Now you can disable this account:
+	You will get an output with the credentials of each user.
+
+ 6. Now you can disable this bootstrap init user account:
     1. Disable the terraform-init AWS keys by running: `./scripts/self_lock_aws_access_key.sh`
-    2. Optionally delete the user and policy in the console.
+    2. Optionally delete the user and policy using the console.
 
- 7. Configure the new users:
-    1. Login into the console with each user: https://keytwine-root.signin.aws.amazon.com/console
-    2. Change the password
-    3. Add a MFA device in IAM > Users > username > MFA
+ 7. Finally: Configure the new users:
+    1. Send the output of the terraform to each user.
+    2. Each user can now login in the console: https://keytwine-root.signin.aws.amazon.com/console and:
+		1. Change the password
+		2. Add a MFA device in IAM > Users > username > MFA
 
+## Bootstrapping a sub-account
+
+In order to add a new subaccount:
+
+ 1. In the consolidated login, create a new subaccount: https://console.aws.amazon.com/organizations/home?#/accounts
+	* Set the "IAM role name" to something like `subaccount-admin`
+ 2. In the code: add a new variable with the subaccount ID: variables.tf,  run-terraform.sh, provider.tf...
+ 3. Add the call to the subaccount module in `subaccount_<name>.tf`
+	* Include the parameters `terraform_assume_role = "subaccount-admin"` for the first run, as the role `admin` does not exist.
+ 4. Run `./run-terraform.sh apply`
+
+Once the account is setup, you can:
+
+ 1. Remove the `terraform_assume_role = "subaccount-admin"` so it would start using the role `admin`
+ 2. Remove the role `subaccount-admin` form the subaccount, for instance:
+    ```
+awssts admin@keytwine-sandbox
+aws iam delete-role-policy \
+	--role-name subaccount-admin \
+	--policy-name AdministratorAccess
+aws iam delete-role \
+	--role-name subaccount-admin
+```
