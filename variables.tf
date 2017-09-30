@@ -1,3 +1,7 @@
+variable "company_name" {
+  default = "keytwine"
+}
+
 variable "aws_default_region" {
     default = "eu-west-1"
 }
