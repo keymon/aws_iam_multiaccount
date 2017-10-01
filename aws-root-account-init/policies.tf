@@ -21,7 +21,7 @@ EOF
 
 resource "aws_iam_policy" "AssumeAdminRole" {
   name        = "AssumeAdminRole"
-  description = "Allow to assume admin in current and sub accounts account"
+  description = "Allow admins to assume any role in current and sub accounts accounts"
   path        = "/custom/"
 
   policy = <<EOF
@@ -35,7 +35,7 @@ resource "aws_iam_policy" "AssumeAdminRole" {
     "Resource": ${
       jsonencode(
         formatlist(
-          "arn:aws:iam::%s:role/admin",
+          "arn:aws:iam::%s:role/*",
           concat(list(var.root_account_id), var.sub_account_ids)
         )
       )
@@ -87,6 +87,13 @@ data "template_file" "AssumeRoleTrustPolicyRootAccountWithMFA" {
           "aws:MultiFactorAuthPresent": "true"
         }
       }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${var.root_account_id}:role/admin"
+      },
+      "Action": "sts:AssumeRole"
     }
   ]
 }

@@ -1,11 +1,3 @@
-variable "name" {
-  description = "Name of the user to create. Can be email"
-}
-
-variable "pgp_key" {
-  description = "GPG Public key in base64: gpg --export 12345678 | base64"
-}
-
 resource "aws_iam_user" "iam_user" {
   name = "${var.name}"
 }
@@ -32,14 +24,3 @@ export AWS_SECRET_ACCESS_KEY="$(echo "${aws_iam_access_key.iam_user.encrypted_se
 EOF
 }
 
-output "credentials_sh" {
-  value = "${data.template_file.credentials_sh.rendered}"
-}
-
-output "name" {
-  value = "${aws_iam_user.iam_user.name}"
-}
-
-output "arn" {
-  value = "${aws_iam_user.iam_user.arn}"
-}

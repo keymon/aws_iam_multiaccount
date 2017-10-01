@@ -1,3 +1,7 @@
+variable "company_name" {
+  default = "keytwine"
+}
+
 variable "aws_default_region" {
     default = "eu-west-1"
 }
@@ -6,9 +10,8 @@ variable "root_account_id" {
     description = "Root account id"
 }
 
-variable "sub_account_ids" {
-    description = "AWS Sub account ids"
-    type        = "list"
+variable "sub_account_id_sandbox" {
+    description = "AWS Sub account id for sandbox account"
 }
 
 # gpg --export -a 2EA619ED

@@ -17,7 +17,7 @@ case "$(uname -s)" in
 esac
 MY_IP="$(curl -qs ifconfig.co)"
 
-ACCOUNT_ID="${ACCOUNT_ID:=${-1}}"
+ACCOUNT_ID="${ACCOUNT_ID:-${1:-}}"
 if [ -z "${ACCOUNT_ID}" ]; then
   cat <<EOF
 Pass the root AWS account id as argument. You can get it in the console or running:
@@ -28,7 +28,7 @@ fi
 
 cat <<EOF
 #
-# TerraformInitRestricted: IAM policy with least privileged access which you use to initialise your account. Delete after usage.
+# TerraformInitRestricted: IAM policy with least privileged access which you use to initialise your root account. Delete after usage.
 #
 {
    "Version" : "2012-10-17",
@@ -105,4 +105,3 @@ cat <<EOF
    ]
 }
 EOF
-

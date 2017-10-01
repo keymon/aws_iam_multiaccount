@@ -14,6 +14,11 @@ resource "aws_iam_role_policy_attachment" "billing_RestrictToWhitelistedIPs" {
   policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
 }
 
+resource "aws_iam_role_policy_attachment" "billing_BillingAccess" {
+  role       = "${aws_iam_role.billing.name}"
+  policy_arn = "arn:aws:iam::aws:policy/job-function/Billing"
+}
+
 resource "aws_iam_role" "admin" {
   name               = "admin"
   description        = "Administrator: access to all resources and APIs. Occasional use."
