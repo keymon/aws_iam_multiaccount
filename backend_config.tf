@@ -4,6 +4,5 @@ terraform {
 	key            = "aws_iam_multiaccount"
 	region         = "eu-west-1"
 	dynamodb_table = "terraform_locks"
-	role_arn       = "arn:aws:iam::....:role/admin"
   }
 }
