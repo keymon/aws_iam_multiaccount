@@ -14,6 +14,13 @@ data "template_file" "AssumeRoleTrustPolicySubAccountWithMFA" {
           "aws:MultiFactorAuthPresent": "true"
         }
       }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${var.root_account_id}:role/admin"
+      },
+      "Action": "sts:AssumeRole"
     }
   ]
 }
