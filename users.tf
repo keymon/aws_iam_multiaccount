@@ -19,3 +19,14 @@ module "hector_rivas_aws_dev_keytwine_com" {
 output "hector_rivas_aws_dev_keytwine_com_credentials_sh" {
   value = "${module.hector_rivas_aws_dev_keytwine_com.credentials_sh}"
 }
+
+module "graciafdez_aws_dev_keytwine_com" {
+  source     = "./aws-iam-user-init"
+  name       = "graciafdez+aws.keytwine@gmail.com"
+  pgp_key    = "${var.gfl_pgp_public_key}"
+  account_id = "${var.root_account_id}"
+}
+
+output "graciafdez_aws_dev_keytwine_com_credentials_sh" {
+  value = "${module.graciafdez_aws_dev_keytwine_com.credentials_sh}"
+}
