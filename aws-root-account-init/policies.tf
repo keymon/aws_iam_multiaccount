@@ -173,31 +173,3 @@ resource "aws_iam_policy" "SelfManageAccount" {
 }
 EOF
 }
-
-resource "aws_iam_policy" "RestrictToWhitelistedIPs" {
-  name        = "RestrictToWhitelistedIPs"
-  description = "Only allow to operate from the Whitelisted IPs"
-  path        = "/custom/"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect" : "Deny",
-      "Resource" : [
-        "*"
-      ],
-      "Action" : [
-        "*"
-      ],
-      "Condition" : {
-        "NotIpAddress" : {
-          "aws:SourceIp" : ${jsonencode(var.allowed_ips)}
-        }
-      }
-    }
-  ]
-}
-EOF
-}

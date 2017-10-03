@@ -11,7 +11,7 @@ resource "aws_iam_role_policy_attachment" "billing_AssumeBillingRole" {
 
 resource "aws_iam_role_policy_attachment" "billing_RestrictToWhitelistedIPs" {
   role       = "${aws_iam_role.billing.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
 
 resource "aws_iam_role_policy_attachment" "billing_BillingAccess" {
@@ -27,7 +27,7 @@ resource "aws_iam_role" "admin" {
 
 resource "aws_iam_role_policy_attachment" "admin_AssumeAdminRole" {
   role       = "${aws_iam_role.admin.name}"
-  policy_arn = "${aws_iam_policy.AssumeAdminRole.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
 
 resource "aws_iam_role_policy_attachment" "admin_AdministratorAccess" {
@@ -37,7 +37,7 @@ resource "aws_iam_role_policy_attachment" "admin_AdministratorAccess" {
 
 resource "aws_iam_role_policy_attachment" "admin_RestrictToWhitelistedIPs" {
   role       = "${aws_iam_role.admin.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
 
 resource "aws_iam_role" "dev" {
@@ -53,5 +53,5 @@ resource "aws_iam_role_policy_attachment" "dev_AssumeSubAccountDevRole" {
 
 resource "aws_iam_role_policy_attachment" "dev_RestrictToWhitelistedIPs" {
   role       = "${aws_iam_role.dev.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }

@@ -14,8 +14,13 @@ This repository adds a policy to only allow access from a list whitelisted IPs.
 These IPs are configured in `pass keytwine/aws/allowed_ips.json` and it
 will also pick the current IP when running terraform apply.
 
-But if the IP is not added, currently the only way is login with the root account
-and edit the policy automatically.
+If the IP is not alllowed, you can load the user AWS admi ncredentials
+and run `./scripts/whitelist_current_ip.sh`.  For example, using the
+[`awssts`](https://github.com/keymon/aws_key_management/blob/master/awssts.sh)
+tool:
+
+    awssts user:hector.rivas+admin@keytwine \
+          ./scripts/whitelist_current_ip.sh
 
 # Credits
 
