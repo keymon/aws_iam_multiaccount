@@ -41,7 +41,7 @@ resource "aws_iam_group_membership" "interactive_users" {
 
 resource "aws_iam_group_policy_attachment" "interactive_users_RestrictToWhitelistedIPs" {
   group      = "${aws_iam_group.interactive_users.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
 
 # Group permissions

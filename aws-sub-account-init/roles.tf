@@ -11,7 +11,7 @@ resource "aws_iam_role_policy_attachment" "admin_AdministratorAccess" {
 
 resource "aws_iam_role_policy_attachment" "admin_RestrictToWhitelistedIPs" {
   role       = "${aws_iam_role.admin.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
 
 resource "aws_iam_role" "dev" {
@@ -27,5 +27,5 @@ resource "aws_iam_role_policy_attachment" "dev_PowerUserAccess" {
 
 resource "aws_iam_role_policy_attachment" "dev_RestrictToWhitelistedIPs" {
   role       = "${aws_iam_role.dev.name}"
-  policy_arn = "${aws_iam_policy.RestrictToWhitelistedIPs.arn}"
+  policy_arn = "${module.aws-ip-restriction.RestrictToWhitelistedIPs_arn}"
 }
