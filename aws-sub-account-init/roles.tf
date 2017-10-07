@@ -21,7 +21,7 @@ resource "aws_iam_role" "dev" {
 }
 
 resource "aws_iam_role_policy_attachment" "dev_PowerUserAccess" {
-  role       = "${aws_iam_role.admin.name}"
+  role       = "${aws_iam_role.dev.name}"
   policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"
 }
 
