@@ -20,7 +20,7 @@ run_terraform() {
       -e AWS_ACCESS_KEY_ID \
       -e AWS_SECRET_ACCESS_KEY \
       -e AWS_SESSION_TOKEN \
-      $(env | grep TF_VAR_ | cut -f 1 -d = | xargs -I{} echo "-e {}" | xargs) \
+      $(env | grep TF_VAR_ | cut -f 1 -d = | xargs -n 1 -I{} echo "-e {}" | xargs -I{} echo "{}") \
       terraform_awscli \
       terraform "$@"
   else
