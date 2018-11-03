@@ -44,7 +44,10 @@ resource "aws_iam_group" "gfl_admin_users" {
 resource "aws_iam_group_membership" "gfl_admin_users" {
   name  = "gfl_admin_users_group_membership"
   group = "${aws_iam_group.gfl_admin_users.name}"
-  users = ["${module.graciafdez_aws_dev_keytwine_com.name}"]
+  users = [
+    "${module.graciafdez_aws_dev_keytwine_com.name}",
+    "${module.hector_rivas_aws_admin_keytwine_com.name}",
+  ]
 }
 
 resource "aws_iam_group_policy_attachment" "gfl_admin_users_AssumeAdminRoleGflSubAccount" {
