@@ -19,10 +19,6 @@ case "${1:-}" in
   init-backend)
     init_terraform_backend
     ;;
-  init)
-    run_terraform init
-    run_terraform get
-    ;;
   *)
     run_terraform "$@"
     ;;
