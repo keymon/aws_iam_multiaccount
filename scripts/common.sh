@@ -16,6 +16,7 @@ run_terraform() {
     build_docker
     docker run --rm  \
       -w "${PROJECT_ROOT}" -v "${PROJECT_ROOT}:${PROJECT_ROOT}" \
+      -a stdout -a stderr \
       -i $(tty -s && echo -t) \
       -e AWS_ACCESS_KEY_ID \
       -e AWS_SECRET_ACCESS_KEY \
@@ -32,6 +33,7 @@ run_awscli() {
   if [ -z "${DISABLE_DOCKER:-}" ]; then
     build_docker
     docker run --rm  \
+      -a stdout -a stderr \
       -i $(tty -s && echo -t) \
       -e AWS_ACCESS_KEY_ID \
       -e AWS_SECRET_ACCESS_KEY \
