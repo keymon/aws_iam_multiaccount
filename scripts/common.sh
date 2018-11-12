@@ -2,7 +2,7 @@ PROJECT_ROOT=$(git rev-parse --show-toplevel)
 PROJECT_NAME="${PROJECT_ROOT##*/}"
 
 build_docker() {
-  [ -z "${_docker_built:-}" ] || return
+  [ -z "${_docker_built:-}" ] || return 0
   (
     echo "Building terraform+awscli docker container image..."
     cd "${PROJECT_ROOT}"
