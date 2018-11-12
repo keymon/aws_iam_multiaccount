@@ -1,5 +1,6 @@
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 PROJECT_NAME="${PROJECT_ROOT##*/}"
+TF_BACKEND_CONFIG="${PROJECT_ROOT}/backend_config.tf"
 
 build_docker() {
   [ -z "${_docker_built:-}" ] || return 0
@@ -48,37 +49,44 @@ run_awscli() {
 }
 
 init_terraform_backend() {
+  if [ -f "${TF_BACKEND_CONFIG}" ] && [ "${1:-}" != "force" ]; then
+    echo "${TF_BACKEND_CONFIG} already exists, not initializing backend"
+    return 0
+  fi
+
   ACCOUNT_ID="$(run_awscli sts get-caller-identity --query Account --output text | tr -d '\r')"
   AWS_REGION="eu-west-1"
   BUCKET_NAME="terraform-tfstate-$(echo "${ACCOUNT_ID}" | shasum | cut -f 1 -d " ")"
-
+  DYNAMODB_TABLE="terraform_locks"
 
   run_awscli s3api head-bucket \
     --region "${AWS_REGION}" \
     --bucket "${BUCKET_NAME}" > /dev/null 2>&1 || \
     run_awscli s3api create-bucket \
-    --region "${AWS_REGION}" \
-    --bucket "${BUCKET_NAME}"  \
-    --create-bucket-configuration LocationConstraint="${AWS_REGION}"
+      --region "${AWS_REGION}" \
+      --bucket "${BUCKET_NAME}"  \
+      --create-bucket-configuration LocationConstraint="${AWS_REGION}"
 
   run_awscli dynamodb describe-table \
     --region "${AWS_REGION}" \
     --table-name terraform_locks > /dev/null 2>&1 ||
     run_awscli dynamodb create-table \
-    --region "${AWS_REGION}" \
-    --table-name terraform_locks \
-    --attribute-definitions AttributeName=LockID,AttributeType=S \
-    --key-schema AttributeName=LockID,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+      --region "${AWS_REGION}" \
+      --table-name terraform_locks \
+      --attribute-definitions AttributeName=LockID,AttributeType=S \
+      --key-schema AttributeName=LockID,KeyType=HASH \
+      --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 
-  cat <<EOF > ./backend_config.tf
+  cat <<EOF > "${TF_BACKEND_CONFIG}"
 terraform {
   backend "s3" {
     bucket         = "${BUCKET_NAME}"
     key            = "${PROJECT_NAME}.tfstate"
     region         = "${AWS_REGION}"
-    dynamodb_table = "terraform_locks"
+    dynamodb_table = "${DYNAMODB_TABLE}"
   }
 }
 EOF
+
+  echo "Terraform backend resources created and config has been written in ${TF_BACKEND_CONFIG}"
 }
