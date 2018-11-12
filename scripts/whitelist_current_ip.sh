@@ -46,7 +46,13 @@ get_sts_token() {
     --output text \
     --query '[Credentials.AccessKeyId,Credentials.SecretAccessKey,Credentials.SessionToken]' \
     | \
-      awk '{ print "export AWS_ACCESS_KEY_ID=\"" $1 "\"\n" "export AWS_SECRET_ACCESS_KEY=\"" $2 "\"\n" "export AWS_SESSION_TOKEN=\"" $3 "\"" }'
+      awk '{ print \
+        "export AWS_ACCESS_KEY_ID=\"" $1 "\";\n" \
+        "export AWS_SECRET_ACCESS_KEY=\"" $2 "\";\n" \
+        "export AWS_SESSION_TOKEN=\"" $3 "\";\n" \
+        "export -n AWS_SECURITY_TOKEN;\n" \
+        "export -n AWS_VAULT;\n" \
+      }'
 }
 
 get_policy() {
@@ -123,7 +129,7 @@ add_ip_to_policy_in_account() {
 current_ip="$(curl -qs ifconfig.co)"
 
 # Retrieve first token with MFA auth for the root account
-eval $(get_sts_token "${ROOT_ACCOUNT_ID}" "${WHITELIST_IP_POLICY_UPDATE_ROLE}" "whitelist_ips_updater+${current_ip}")
+eval "$(get_sts_token "${ROOT_ACCOUNT_ID}" "${WHITELIST_IP_POLICY_UPDATE_ROLE}" "whitelist_ips_updater+${current_ip}")"
 
 for account_id in ${ACCOUNT_IDS}; do
   add_ip_to_policy_in_account "${account_id}" \
