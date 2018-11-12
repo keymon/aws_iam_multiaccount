@@ -50,7 +50,7 @@ run_awscli() {
 init_terraform_backend() {
   ACCOUNT_ID="$(run_awscli sts get-caller-identity --query Account --output text | tr -d '\r')"
   AWS_REGION="eu-west-1"
-  BUCKET_NAME="terraform-tfstate-${ACCOUNT_ID}"
+  BUCKET_NAME="terraform-tfstate-$(echo "${ACCOUNT_ID}" | shasum | cut -f 1 -d " ")"
 
 
   run_awscli s3api head-bucket \
@@ -74,7 +74,7 @@ init_terraform_backend() {
   cat <<EOF > ./backend_config.tf
 terraform {
   backend "s3" {
-    bucket         = "terraform-tfstate-${ACCOUNT_ID}"
+    bucket         = "${BUCKET_NAME}"
     key            = "${PROJECT_NAME}.tfstate"
     region         = "${AWS_REGION}"
     dynamodb_table = "terraform_locks"
